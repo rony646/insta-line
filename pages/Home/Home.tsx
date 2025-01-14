@@ -1,9 +1,10 @@
 import { View, Text } from "react-native";
+import * as S from "./styles";
 
 export const Home = () => {
   return (
     <View>
-      <Text>Home Page</Text>
+      <S.Title>Home Page</S.Title>
     </View>
   );
 };
