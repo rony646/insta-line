@@ -14,8 +14,8 @@ export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 25px;
+  margin-top: 140px;
+  gap: 35px;
   width: 100%;
   height: 100%;
 `;

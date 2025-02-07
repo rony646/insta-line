@@ -34,7 +34,7 @@ export const Home = () => {
         <View
           style={{
             backgroundColor: "#ccc",
-            height: 100,
+            height: 150,
             width: "100%",
             borderRadius: 10,
           }}
