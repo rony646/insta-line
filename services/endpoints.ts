@@ -1,8 +1,16 @@
+import { ToastAndroid } from "react-native";
 import api from "./api";
 import { paths } from "./paths";
 
 interface PostCaptionResponse {
-  text: string;
+  choices: {
+    index: 0;
+    message: {
+      role: string;
+      content: string;
+      refusal: boolean | null;
+    };
+  }[];
 }
 
 export const generatePostCaption = async (
@@ -10,14 +18,14 @@ export const generatePostCaption = async (
 ): Promise<PostCaptionResponse> => {
   try {
     const response = await api.post(paths.chat, {
-      model: "gpt-4o",
+      model: "gpt-4",
       messages: [
         {
           role: "user",
           content: [
             {
               type: "text",
-              text: "Create a beautiful boy name",
+              text: `Create a create instagram caption for this description: ${description}`,
             },
           ],
         },
@@ -26,6 +34,11 @@ export const generatePostCaption = async (
     });
     return response.data;
   } catch (err) {
+    ToastAndroid.show(
+      "Error while trying to generate caption",
+      ToastAndroid.SHORT
+    );
+
     throw err;
   }
 };
