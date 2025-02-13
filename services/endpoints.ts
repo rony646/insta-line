@@ -18,7 +18,7 @@ export const generatePostCaption = async (
 ): Promise<PostCaptionResponse> => {
   try {
     const response = await api.post(paths.chat, {
-      model: "gpt-4",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "user",
