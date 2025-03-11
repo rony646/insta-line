@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import { ToastAndroid } from "react-native";
+import { ToastAndroid, TouchableOpacity, View } from "react-native";
 
-import { Button, Input } from "@ui-kitten/components";
+import { Button, Input, Text } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as Clipboard from "expo-clipboard";
 
@@ -32,6 +32,14 @@ export const Home = () => {
   return (
     <S.Container>
       <S.Wrapper>
+        <Button
+          size="large"
+          style={{ width: "100%" }}
+          accessoryLeft={<Ionicons name="image" size={25} color="#fff" />}
+        >
+          Upload your post images
+        </Button>
+
         <Input
           value={inputText}
           textStyle={{ height: 100 }}
