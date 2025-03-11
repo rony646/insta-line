@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import { ToastAndroid, TouchableOpacity, View } from "react-native";
+import { ToastAndroid } from "react-native";
 
-import { Button, Input, Text } from "@ui-kitten/components";
+import { Button, Input } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as Clipboard from "expo-clipboard";
 
