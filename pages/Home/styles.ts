@@ -58,7 +58,4 @@ export const styles = StyleSheet.create({
   button: {
     width: "100%",
   },
-  button2: {
-    fontSize: 50,
-  },
 });
