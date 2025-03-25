@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import * as Mime from "react-native-mime-types";
 import Carousel from "react-native-reanimated-carousel";
 
 import { Image, ToastAndroid, View } from "react-native";
@@ -22,11 +24,34 @@ export const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [images, setImages] = useState<ImageType[]>([]);
 
+  const convertImagesToBase64 = async (
+    images: ImageType[]
+  ): Promise<string[]> => {
+    return Promise.all(
+      images.map(async (image) => {
+        const base64 = await FileSystem.readAsStringAsync(image.uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        const imageType = Mime.lookup(image.uri) || "image/jpeg";
+
+        return `data:${imageType};base64,${base64}`;
+      })
+    );
+  };
+
   const handleGenerateCaption = async (description: string) => {
     setLoading(true);
-    const response = await generatePostCaption(description);
-    setCaption(response.choices[0].message.content);
-    setLoading(false);
+    try {
+      const base64Images = await convertImagesToBase64(images);
+
+      const response = await generatePostCaption(description, base64Images);
+      setCaption(response.choices[0].message.content);
+
+      setLoading(false);
+    } catch (error) {
+      ToastAndroid.show(data.messages.error, ToastAndroid.SHORT);
+      setLoading(false);
+    }
   };
 
   const handleCopyCaptionPress = () => {

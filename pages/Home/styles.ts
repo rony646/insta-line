@@ -16,7 +16,7 @@ export const Container = styled.View`
 
 export const ResultContainer = styled.View`
   background-color: #ccc;
-  height: 150px;
+  height: 170px;
   width: 100%;
   border-radius: 10px;
   padding: 10px;
@@ -33,7 +33,7 @@ export const CaptionContainer = styled.View`
 
 export const Caption = styled.Text<CaptionProps>`
   font-weight: 600;
-  font-size: 20px;
+  font-size: 16px;
   color: ${(props: CaptionProps) => props.textColor};
 `;
 

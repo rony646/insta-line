@@ -20,6 +20,7 @@
     "axios": "^1.7.9",
     "expo": "~52.0.25",
     "expo-clipboard": "~7.0.1",
+    "expo-file-system": "~18.0.11",
     "expo-image-picker": "~16.0.6",
     "expo-status-bar": "~2.0.1",
     "install": "^0.13.0",
@@ -41,6 +42,7 @@
     "@types/react": "~18.3.12",
     "@types/styled-components-react-native": "^5.2.5",
     "metro": "^0.81.1",
+    "react-native-mime-types": "^2.5.0",
     "typescript": "^5.3.3"
   },
   "private": true

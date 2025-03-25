@@ -14,7 +14,8 @@ interface PostCaptionResponse {
 }
 
 export const generatePostCaption = async (
-  description: string
+  description: string,
+  imageUrls: string[]
 ): Promise<PostCaptionResponse> => {
   try {
     const response = await api.post(paths.chat, {
@@ -25,8 +26,14 @@ export const generatePostCaption = async (
           content: [
             {
               type: "text",
-              text: `Create a create instagram caption for this description: ${description}`,
+              text: `Create a create instagram caption for this description: ${description} and the attached images`,
             },
+            ...imageUrls.map((url) => ({
+              type: "image_url",
+              image_url: {
+                url,
+              },
+            })),
           ],
         },
       ],
