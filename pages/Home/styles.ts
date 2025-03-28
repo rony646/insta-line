@@ -1,10 +1,6 @@
 import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
 
-interface CaptionProps {
-  textColor: string;
-}
-
 export const Container = styled.View`
   display: flex;
   flex: 1;
@@ -14,38 +10,11 @@ export const Container = styled.View`
   padding: 15px;
 `;
 
-export const ResultContainer = styled.View`
-  background-color: #ccc;
-  height: 170px;
-  width: 100%;
-  border-radius: 10px;
-  padding: 10px;
-`;
-
-export const FlexWrapper = styled.View`
-  display: flex;
-  height: 100%;
-`;
-
-export const CaptionContainer = styled.View`
-  flex: 1;
-`;
-
-export const Caption = styled.Text<CaptionProps>`
-  font-weight: 600;
-  font-size: 16px;
-  color: ${(props: CaptionProps) => props.textColor};
-`;
-
-export const Touchable = styled.TouchableOpacity`
-  align-self: flex-end;
-`;
-
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 140px;
+  margin-top: 100px;
   gap: 35px;
   width: 100%;
   height: 100%;

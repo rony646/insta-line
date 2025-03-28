@@ -3,20 +3,20 @@ import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as Mime from "react-native-mime-types";
-import Carousel from "react-native-reanimated-carousel";
 
-import { Image, ToastAndroid, View } from "react-native";
+import { ToastAndroid } from "react-native";
 
 import { Button, Input } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import * as Clipboard from "expo-clipboard";
 
 import { data } from "./data";
+import { ImageType } from "@/components/Carousel/types";
 import * as S from "./styles";
-import { Image as ImageType } from "./types";
 
-import { generatePostCaption } from "../../services/endpoints";
+import { generatePostCaption } from "@/services/endpoints";
 import React from "react";
+import Carousel from "@/components/Carousel";
+import ShowCaption from "@/components/ShowCaption";
 
 export const Home = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -54,12 +54,6 @@ export const Home = () => {
     }
   };
 
-  const handleCopyCaptionPress = () => {
-    Clipboard.setStringAsync(caption).then(() =>
-      ToastAndroid.show(data.messages.copied, ToastAndroid.SHORT)
-    );
-  };
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
@@ -92,29 +86,7 @@ export const Home = () => {
           {data.buttons.uploadImage}
         </Button>
 
-        {images.length && (
-          <View>
-            <Carousel
-              width={350}
-              height={160}
-              data={images}
-              mode="parallax"
-              renderItem={({ item }) => (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Image
-                    source={{ uri: item.uri }}
-                    style={{ width: 320, height: 170, borderRadius: 10 }}
-                  />
-                </View>
-              )}
-            />
-          </View>
-        )}
+        {images.length && <Carousel images={images} />}
 
         <Input
           value={inputText}
@@ -136,20 +108,7 @@ export const Home = () => {
           {data.buttons.caption}
         </Button>
 
-        <S.ResultContainer>
-          <S.FlexWrapper>
-            <S.CaptionContainer>
-              <S.Caption textColor={caption ? "#232323" : "#3c3c3c97"}>
-                {caption ? `${caption}` : data.placeholder}
-              </S.Caption>
-            </S.CaptionContainer>
-            {caption && (
-              <S.Touchable onPress={handleCopyCaptionPress}>
-                <Ionicons name="copy" size={42} color="#3c3c3cdd" />
-              </S.Touchable>
-            )}
-          </S.FlexWrapper>
-        </S.ResultContainer>
+        <ShowCaption caption={caption} />
       </S.Wrapper>
     </S.Container>
   );
