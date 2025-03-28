@@ -8,8 +8,6 @@ export const data = {
     uploadImage: "Upload your post images",
   },
   messages: {
-    copied: "Caption copied to the clipboard!",
     error: "Error while trying to handle images",
   },
-  placeholder: "Your caption will appear here...",
 };
