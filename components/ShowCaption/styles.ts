@@ -6,7 +6,7 @@ interface CaptionProps {
 
 export const ResultContainer = styled.View`
   background-color: #ccc;
-  height: 170px;
+  height: 150px;
   width: 100%;
   border-radius: 10px;
   padding: 10px;

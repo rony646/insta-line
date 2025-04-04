@@ -36,7 +36,8 @@
     "react-native-screens": "~4.4.0",
     "react-native-svg": "^9.13.6",
     "react-native-web": "~0.19.13",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.14",
+    "@react-native-async-storage/async-storage": "1.23.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

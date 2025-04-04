@@ -1,10 +1,10 @@
 import { useState } from "react";
 
+import { ToastAndroid } from "react-native";
+
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as Mime from "react-native-mime-types";
-
-import { ToastAndroid } from "react-native";
 
 import { Button, Input } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -17,6 +17,7 @@ import { generatePostCaption } from "@/services/endpoints";
 import React from "react";
 import Carousel from "@/components/Carousel";
 import ShowCaption from "@/components/ShowCaption";
+import { saveCaption } from "@/utils/asyncStorage";
 
 export const Home = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -45,7 +46,15 @@ export const Home = () => {
       const base64Images = await convertImagesToBase64(images);
 
       const response = await generatePostCaption(description, base64Images);
-      setCaption(response.choices[0].message.content);
+      const captionText = response.choices[0].message.content;
+      setCaption(captionText);
+
+      saveCaption(
+        new Date().toISOString(),
+        base64Images,
+        captionText,
+        inputText
+      );
 
       setLoading(false);
     } catch (error) {
@@ -100,7 +109,7 @@ export const Home = () => {
         />
 
         <Button
-          disabled={!inputText || loading}
+          disabled={!images.length || loading}
           size="large"
           onPress={() => handleGenerateCaption(inputText)}
           style={S.styles.button}

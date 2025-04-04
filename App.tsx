@@ -6,8 +6,8 @@ import { EvaIconsPack } from "@ui-kitten/eva-icons";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import Home from "./pages/Home";
-import History from "./pages/History";
+import { Home as HomePage } from "./pages/Home";
+import { History as HistoryPage } from "./pages/History";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStaticNavigation } from "@react-navigation/native";
@@ -15,8 +15,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const RootStack = createNativeStackNavigator({
   screens: {
-    Home: {
-      screen: Home,
+    HomeScreen: {
+      screen: HomePage,
 
       options: {
         title: "Home - Insta Line",
@@ -41,7 +41,7 @@ const TabsNavigator = createBottomTabNavigator({
       },
     },
     History: {
-      screen: History,
+      screen: HistoryPage,
       options: {
         title: "History",
         headerTitleAlign: "center",
