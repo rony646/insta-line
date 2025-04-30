@@ -6,8 +6,15 @@ import { truncateText } from "@/utils/truncateText";
 import { styles } from "./styles";
 import { useEffect, useState } from "react";
 import { Caption, getAllCaptions } from "@/utils/asyncStorage";
+import { useNavigation } from "@react-navigation/native";
+import { HistoryStackParamList } from "@/navigation/types";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type NavigationProps = NativeStackNavigationProp<HistoryStackParamList>;
 
 export const History = () => {
+  const navigation = useNavigation<NavigationProps>();
+
   const [loading, setLoading] = useState(false);
   const [captions, setCaptions] = useState<Caption[]>([]);
 
@@ -44,6 +51,14 @@ export const History = () => {
               <Card
                 status="primary"
                 style={styles.card}
+                onPress={
+                  () => navigation.navigate("SavedCaption")
+                  // navigation.navigate("Home", {
+                  //   caption: item.captionText,
+                  //   inputText: item.description,
+                  //   images: item.images,
+                  // })
+                }
                 header={() => (
                   <Text category="h6" style={styles.carHeader}>
                     {item.title}

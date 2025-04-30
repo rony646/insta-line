@@ -1,69 +1,98 @@
 import React from "react";
-
 import * as eva from "@eva-design/eva";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
-
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { Home as HomePage } from "./pages/Home";
-import { History as HistoryPage } from "./pages/History";
-
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createStaticNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const RootStack = createNativeStackNavigator({
-  screens: {
-    HomeScreen: {
-      screen: HomePage,
+import { Home as HomePage } from "@/pages/Home";
+import { History as HistoryPage } from "@/pages/History";
+import { SavedCaption as SavedCaptionPage } from "@/pages/SavedCaption";
+import {
+  HistoryStackParamList,
+  HomeStackParamList,
+  RootTabParamList,
+} from "./navigation/types";
 
-      options: {
-        title: "Home - Insta Line",
-        headerTitleAlign: "center",
-        headerStyle: {
-          backgroundColor: "#f7f7f7",
-        },
-      },
-    },
-  },
-});
+const Stack = createNativeStackNavigator<HomeStackParamList>();
+const HistoryStack = createNativeStackNavigator<HistoryStackParamList>();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
-const TabsNavigator = createBottomTabNavigator({
-  screens: {
-    Home: {
-      screen: RootStack,
-      options: {
-        headerShown: false,
-        tabBarIcon: ({ color }) => (
-          <Ionicons name="home-outline" color={color} size={24} />
-        ),
-      },
-    },
-    History: {
-      screen: HistoryPage,
-      options: {
-        title: "History",
-        headerTitleAlign: "center",
-        headerStyle: {
-          backgroundColor: "#f7f7f7",
-        },
-        tabBarIcon: ({ color }) => (
-          <Ionicons name="time-outline" color={color} size={24} />
-        ),
-      },
-    },
-  },
-});
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomePage}
+        options={{
+          title: "Home - Insta Line",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#f7f7f7",
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
-const Navigation = createStaticNavigation(TabsNavigator);
+function HistoryStackList() {
+  return (
+    <HistoryStack.Navigator>
+      <HistoryStack.Screen name="History" component={HistoryPage} />
+      <HistoryStack.Screen name="SavedCaption" component={SavedCaptionPage} />
+    </HistoryStack.Navigator>
+  );
+}
+
+function TabsNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: "#007bff",
+        tabBarInactiveTintColor: "#aaa",
+        animation: "shift",
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomePage}
+        options={{
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="HistoryTab"
+        component={HistoryStackList}
+        options={{
+          title: "History Tab",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="time-outline" color={color} size={size} />
+          ),
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#f7f7f7",
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <React.Fragment>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.light}>
-        <Navigation />
+        <NavigationContainer>
+          <TabsNavigator />
+        </NavigationContainer>
       </ApplicationProvider>
     </React.Fragment>
   );
