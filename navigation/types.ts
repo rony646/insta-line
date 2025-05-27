@@ -1,9 +1,5 @@
 export type RootTabParamList = {
-  Home: {
-    inputText: string;
-    caption: string;
-    images: string[];
-  };
+  Home: undefined;
   HistoryTab: undefined;
 };
 
@@ -12,5 +8,9 @@ export type HomeStackParamList = {
 };
 export type HistoryStackParamList = {
   History: undefined;
-  SavedCaption: undefined;
+  SavedCaption: {
+    inputText: string;
+    caption: string;
+    images: string[];
+  };
 };

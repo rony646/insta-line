@@ -11,39 +11,22 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home as HomePage } from "@/pages/Home";
 import { History as HistoryPage } from "@/pages/History";
 import { SavedCaption as SavedCaptionPage } from "@/pages/SavedCaption";
-import {
-  HistoryStackParamList,
-  HomeStackParamList,
-  RootTabParamList,
-} from "./navigation/types";
+import { HistoryStackParamList, RootTabParamList } from "./navigation/types";
 
-const Stack = createNativeStackNavigator<HomeStackParamList>();
 const HistoryStack = createNativeStackNavigator<HistoryStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-function HomeStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomePage}
-        options={{
-          title: "Home - Insta Line",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#f7f7f7",
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-
 function HistoryStackList() {
   return (
-    <HistoryStack.Navigator>
+    <HistoryStack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
       <HistoryStack.Screen name="History" component={HistoryPage} />
-      <HistoryStack.Screen name="SavedCaption" component={SavedCaptionPage} />
+      <HistoryStack.Screen
+        name="SavedCaption"
+        component={SavedCaptionPage}
+        options={{
+          headerTitle: "Saved Caption",
+        }}
+      />
     </HistoryStack.Navigator>
   );
 }
@@ -71,14 +54,10 @@ function TabsNavigator() {
         name="HistoryTab"
         component={HistoryStackList}
         options={{
-          title: "History Tab",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="time-outline" color={color} size={size} />
           ),
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#f7f7f7",
-          },
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

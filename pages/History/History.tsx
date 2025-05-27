@@ -51,13 +51,12 @@ export const History = () => {
               <Card
                 status="primary"
                 style={styles.card}
-                onPress={
-                  () => navigation.navigate("SavedCaption")
-                  // navigation.navigate("Home", {
-                  //   caption: item.captionText,
-                  //   inputText: item.description,
-                  //   images: item.images,
-                  // })
+                onPress={() =>
+                  navigation.navigate("SavedCaption", {
+                    caption: item.captionText,
+                    inputText: item.description,
+                    images: item.images,
+                  })
                 }
                 header={() => (
                   <Text category="h6" style={styles.carHeader}>

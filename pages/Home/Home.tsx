@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { ToastAndroid } from "react-native";
 
@@ -29,7 +29,6 @@ export const Home = () => {
   const [base64Images, setBase64Images] = useState<string[]>([]);
 
   const route = useRoute<RouteProp<RootTabParamList, "Home">>();
-  const captionData = route.params || {};
 
   const convertImagesToBase64 = async (
     images: ImageType[]
@@ -87,16 +86,6 @@ export const Home = () => {
       setImages(images);
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      if (captionData.caption) {
-        setBase64Images(captionData.images);
-        setInputText(captionData.inputText);
-        setCaption(captionData.caption);
-      }
-    })();
-  }, [route.params, captionData]);
 
   return (
     <S.Container>
