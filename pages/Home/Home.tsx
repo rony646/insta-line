@@ -1,10 +1,10 @@
 import { useState } from "react";
 
+import { ToastAndroid } from "react-native";
+
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as Mime from "react-native-mime-types";
-
-import { ToastAndroid } from "react-native";
 
 import { Button, Input } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -17,12 +17,18 @@ import { generatePostCaption } from "@/services/endpoints";
 import React from "react";
 import Carousel from "@/components/Carousel";
 import ShowCaption from "@/components/ShowCaption";
+import { saveCaption } from "@/utils/asyncStorage";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootTabParamList } from "@/navigation/types";
 
 export const Home = () => {
   const [inputText, setInputText] = useState<string>("");
   const [caption, setCaption] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [images, setImages] = useState<ImageType[]>([]);
+  const [base64Images, setBase64Images] = useState<string[]>([]);
+
+  const route = useRoute<RouteProp<RootTabParamList, "Home">>();
 
   const convertImagesToBase64 = async (
     images: ImageType[]
@@ -45,7 +51,15 @@ export const Home = () => {
       const base64Images = await convertImagesToBase64(images);
 
       const response = await generatePostCaption(description, base64Images);
-      setCaption(response.choices[0].message.content);
+      const captionText = response.choices[0].message.content;
+      setCaption(captionText);
+
+      saveCaption(
+        new Date().toISOString(),
+        base64Images,
+        captionText,
+        inputText
+      );
 
       setLoading(false);
     } catch (error) {
@@ -76,17 +90,24 @@ export const Home = () => {
   return (
     <S.Container>
       <S.Wrapper>
-        <Button
-          size="large"
-          style={S.styles.button}
-          onPress={pickImage}
-          aria-label="Upload your post images"
-          accessoryLeft={<Ionicons name="image" size={25} color="#fff" />}
-        >
-          {data.buttons.uploadImage}
-        </Button>
+        {base64Images.length ? null : (
+          <Button
+            size="large"
+            style={S.styles.button}
+            onPress={pickImage}
+            aria-label="Upload your post images"
+            accessoryLeft={<Ionicons name="image" size={25} color="#fff" />}
+          >
+            {data.buttons.uploadImage}
+          </Button>
+        )}
 
-        {images.length && <Carousel images={images} />}
+        {images.length ||
+          (base64Images.length && (
+            <Carousel
+              images={base64Images || images.map((image) => image.uri)}
+            />
+          ))}
 
         <Input
           value={inputText}
@@ -99,14 +120,16 @@ export const Home = () => {
           onChangeText={(value) => setInputText(value)}
         />
 
-        <Button
-          disabled={!inputText || loading}
-          size="large"
-          onPress={() => handleGenerateCaption(inputText)}
-          style={S.styles.button}
-        >
-          {data.buttons.caption}
-        </Button>
+        {base64Images ? null : (
+          <Button
+            disabled={!images.length || loading}
+            size="large"
+            onPress={() => handleGenerateCaption(inputText)}
+            style={S.styles.button}
+          >
+            {data.buttons.caption}
+          </Button>
+        )}
 
         <ShowCaption caption={caption} />
       </S.Wrapper>
