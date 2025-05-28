@@ -28,8 +28,6 @@ export const Home = () => {
   const [images, setImages] = useState<ImageType[]>([]);
   const [base64Images, setBase64Images] = useState<string[]>([]);
 
-  const route = useRoute<RouteProp<RootTabParamList, "Home">>();
-
   const convertImagesToBase64 = async (
     images: ImageType[]
   ): Promise<string[]> => {
@@ -87,6 +85,8 @@ export const Home = () => {
     }
   };
 
+  console.log("images", images);
+
   return (
     <S.Container>
       <S.Wrapper>
@@ -102,12 +102,12 @@ export const Home = () => {
           </Button>
         )}
 
-        {images.length ||
+        {/* {images.length ||
           (base64Images.length && (
             <Carousel
               images={base64Images || images.map((image) => image.uri)}
             />
-          ))}
+          ))} */}
 
         <Input
           value={inputText}
