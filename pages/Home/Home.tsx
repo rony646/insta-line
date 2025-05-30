@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-import { ToastAndroid } from "react-native";
+import { ToastAndroid, View } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as Mime from "react-native-mime-types";
 
-import { Button, Input } from "@ui-kitten/components";
+import { Button, Input, Text } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { data } from "./data";
@@ -18,8 +18,6 @@ import React from "react";
 import Carousel from "@/components/Carousel";
 import ShowCaption from "@/components/ShowCaption";
 import { saveCaption } from "@/utils/asyncStorage";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import { RootTabParamList } from "@/navigation/types";
 
 export const Home = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -85,8 +83,6 @@ export const Home = () => {
     }
   };
 
-  console.log("images", images);
-
   return (
     <S.Container>
       <S.Wrapper>
@@ -102,12 +98,9 @@ export const Home = () => {
           </Button>
         )}
 
-        {/* {images.length ||
-          (base64Images.length && (
-            <Carousel
-              images={base64Images || images.map((image) => image.uri)}
-            />
-          ))} */}
+        {images.length && (
+          <Carousel images={images.map((image) => image.uri)} />
+        )}
 
         <Input
           value={inputText}
@@ -120,18 +113,16 @@ export const Home = () => {
           onChangeText={(value) => setInputText(value)}
         />
 
-        {base64Images ? null : (
-          <Button
-            disabled={!images.length || loading}
-            size="large"
-            onPress={() => handleGenerateCaption(inputText)}
-            style={S.styles.button}
-          >
-            {data.buttons.caption}
-          </Button>
-        )}
-
         <ShowCaption caption={caption} />
+
+        <Button
+          disabled={!images.length || loading}
+          size="large"
+          onPress={() => handleGenerateCaption(inputText)}
+          style={S.styles.button}
+        >
+          {data.buttons.caption}
+        </Button>
       </S.Wrapper>
     </S.Container>
   );
