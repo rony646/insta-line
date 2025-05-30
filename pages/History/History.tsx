@@ -1,14 +1,17 @@
+import { useEffect, useState } from "react";
 import { View, FlatList, Image, RefreshControl } from "react-native";
 
 import { Card, Spinner, Text } from "@ui-kitten/components";
 
 import { truncateText } from "@/utils/truncateText";
 import { styles } from "./styles";
-import { useEffect, useState } from "react";
-import { Caption, getAllCaptions } from "@/utils/asyncStorage";
+
+import { Caption, getAllCaptions, deleteCaption } from "@/utils/asyncStorage";
 import { useNavigation } from "@react-navigation/native";
 import { HistoryStackParamList } from "@/navigation/types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { TouchableOpacity } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 type NavigationProps = NativeStackNavigationProp<HistoryStackParamList>;
 
@@ -22,9 +25,17 @@ export const History = () => {
     setLoading(true);
 
     const data = await getAllCaptions();
-    setCaptions(data);
+    const orderedData = data.reverse();
 
+    setCaptions(orderedData);
     setLoading(false);
+  };
+
+  const removeCaption = async (key: string) => {
+    const updatedCaptions = captions.filter((caption) => caption.key !== key);
+    setCaptions(updatedCaptions);
+
+    await deleteCaption(key);
   };
 
   useEffect(() => {
@@ -75,7 +86,14 @@ export const History = () => {
                       }}
                     />
                   </View>
-                  <Text>{truncateText(item.captionText, 35)}</Text>
+                  <Text style={{ flex: 1 }}>
+                    {truncateText(item.captionText, 35)}
+                  </Text>
+                  <View>
+                    <TouchableOpacity onPress={() => removeCaption(item.key)}>
+                      <Ionicons name="trash" size={23} color="red" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </Card>
             )}
