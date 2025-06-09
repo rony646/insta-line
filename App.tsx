@@ -9,12 +9,23 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Home as HomePage } from "@/pages/Home";
+import { Login as LoginPage } from "@/pages/Login";
 import { History as HistoryPage } from "@/pages/History";
 import { SavedCaption as SavedCaptionPage } from "@/pages/SavedCaption";
 import { HistoryStackParamList, RootTabParamList } from "./navigation/types";
 
 const HistoryStack = createNativeStackNavigator<HistoryStackParamList>();
+const HomeStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<RootTabParamList>();
+
+function HomeStackList() {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="Login" component={LoginPage} />
+      <HomeStack.Screen name="HomeMain" component={TabsNavigator} />
+    </HomeStack.Navigator>
+  );
+}
 
 function HistoryStackList() {
   return (
@@ -70,7 +81,7 @@ export default function App() {
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
-          <TabsNavigator />
+          <HomeStackList />
         </NavigationContainer>
       </ApplicationProvider>
     </React.Fragment>
