@@ -18,8 +18,6 @@ import React from "react";
 import Carousel from "@/components/Carousel";
 import ShowCaption from "@/components/ShowCaption";
 import { saveCaption } from "@/utils/asyncStorage";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import { RootTabParamList } from "@/navigation/types";
 
 export const Home = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -27,8 +25,6 @@ export const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [images, setImages] = useState<ImageType[]>([]);
   const [base64Images, setBase64Images] = useState<string[]>([]);
-
-  const route = useRoute<RouteProp<RootTabParamList, "Home">>();
 
   const convertImagesToBase64 = async (
     images: ImageType[]
@@ -87,6 +83,8 @@ export const Home = () => {
     }
   };
 
+  console.log("Images:", images);
+
   return (
     <S.Container>
       <S.Wrapper>
@@ -102,12 +100,13 @@ export const Home = () => {
           </Button>
         )}
 
-        {images.length ||
-          (base64Images.length && (
-            <Carousel
-              images={base64Images || images.map((image) => image.uri)}
-            />
-          ))}
+        {(images.length || base64Images.length) && (
+          <Carousel
+            images={
+              images.length ? images.map((image) => image.uri) : base64Images
+            }
+          />
+        )}
 
         <Input
           value={inputText}
@@ -120,7 +119,7 @@ export const Home = () => {
           onChangeText={(value) => setInputText(value)}
         />
 
-        {base64Images ? null : (
+        {base64Images.length ? null : (
           <Button
             disabled={!images.length || loading}
             size="large"

@@ -8,6 +8,16 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
+  noCaptionsWrapper: {
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 5,
+    gap: 10,
+  },
+  noCaptionsText: {
+    color: "#757575",
+  },
   card: {
     marginTop: 10,
     width: 390,

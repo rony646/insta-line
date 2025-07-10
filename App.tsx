@@ -8,11 +8,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import ToastManager from "toastify-react-native";
+
 import { Home as HomePage } from "@/pages/Home";
 import { Login as LoginPage } from "@/pages/Login";
 import { History as HistoryPage } from "@/pages/History";
 import { SavedCaption as SavedCaptionPage } from "@/pages/SavedCaption";
 import { HistoryStackParamList, RootTabParamList } from "./navigation/types";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const HistoryStack = createNativeStackNavigator<HistoryStackParamList>();
 const HomeStack = createNativeStackNavigator();
@@ -78,12 +81,15 @@ function TabsNavigator() {
 export default function App() {
   return (
     <React.Fragment>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <NavigationContainer>
-          <HomeStackList />
-        </NavigationContainer>
-      </ApplicationProvider>
+      <AuthProvider>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <NavigationContainer>
+            <HomeStackList />
+          </NavigationContainer>
+        </ApplicationProvider>
+        <ToastManager />
+      </AuthProvider>
     </React.Fragment>
   );
 }
