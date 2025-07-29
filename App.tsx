@@ -127,6 +127,7 @@ function TabsNavigator() {
             <Ionicons name="time-outline" color={color} size={size} />
           ),
           headerShown: false,
+          tabBarLabel: "History",
         }}
       />
     </Tab.Navigator>

@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-import { ToastAndroid } from "react-native";
+import { ToastAndroid, View } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as Mime from "react-native-mime-types";
 
-import { Button, Input } from "@ui-kitten/components";
+import { Button, Input, Text } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { data } from "./data";
@@ -83,8 +83,6 @@ export const Home = () => {
     }
   };
 
-  console.log("Images:", images);
-
   return (
     <S.Container>
       <S.Wrapper>
@@ -100,12 +98,8 @@ export const Home = () => {
           </Button>
         )}
 
-        {(images.length || base64Images.length) && (
-          <Carousel
-            images={
-              images.length ? images.map((image) => image.uri) : base64Images
-            }
-          />
+        {images.length && (
+          <Carousel images={images.map((image) => image.uri)} />
         )}
 
         <Input
@@ -119,18 +113,16 @@ export const Home = () => {
           onChangeText={(value) => setInputText(value)}
         />
 
-        {base64Images.length ? null : (
-          <Button
-            disabled={!images.length || loading}
-            size="large"
-            onPress={() => handleGenerateCaption(inputText)}
-            style={S.styles.button}
-          >
-            {data.buttons.caption}
-          </Button>
-        )}
-
         <ShowCaption caption={caption} />
+
+        <Button
+          disabled={!images.length || loading}
+          size="large"
+          onPress={() => handleGenerateCaption(inputText)}
+          style={S.styles.button}
+        >
+          {data.buttons.caption}
+        </Button>
       </S.Wrapper>
     </S.Container>
   );
