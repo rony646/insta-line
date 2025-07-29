@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import ReanimatedCarousel from "react-native-reanimated-carousel";
 
 import * as S from "./styles";
+import { Text } from "@ui-kitten/components";
 
 interface CarouselProps {
   images: string[];

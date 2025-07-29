@@ -4,7 +4,8 @@ export type RootTabParamList = {
 };
 
 export type HomeStackParamList = {
-  HomeScreen: undefined;
+  Login: undefined;
+  HomeMain: undefined;
 };
 export type HistoryStackParamList = {
   History: undefined;

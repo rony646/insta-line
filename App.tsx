@@ -4,17 +4,84 @@ import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+import { signOut } from "firebase/auth";
+import { authentication } from "@/firebase/config";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import ToastManager from "toastify-react-native";
+
 import { Home as HomePage } from "@/pages/Home";
+import { Login as LoginPage } from "@/pages/Login";
 import { History as HistoryPage } from "@/pages/History";
 import { SavedCaption as SavedCaptionPage } from "@/pages/SavedCaption";
-import { HistoryStackParamList, RootTabParamList } from "./navigation/types";
+import {
+  HistoryStackParamList,
+  HomeStackParamList,
+  RootTabParamList,
+} from "./navigation/types";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const HistoryStack = createNativeStackNavigator<HistoryStackParamList>();
+const HomeStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<RootTabParamList>();
+
+function HomeStackList() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
+  const { setLoggedInUser } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(authentication);
+      setLoggedInUser(null);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+  return (
+    <HomeStack.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTitle: "Insta Line",
+        headerShadowVisible: false,
+        headerBackVisible: false,
+        headerRight: () => (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+              width: 60,
+            }}
+          >
+            <Ionicons
+              name="exit-outline"
+              size={30}
+              color="#d50404"
+              onPress={handleSignOut}
+            />
+          </View>
+        ),
+      }}
+    >
+      <HomeStack.Screen
+        name="Login"
+        component={LoginPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <HomeStack.Screen name="HomeMain" component={TabsNavigator} />
+    </HomeStack.Navigator>
+  );
+}
 
 function HistoryStackList() {
   return (
@@ -24,7 +91,9 @@ function HistoryStackList() {
         name="SavedCaption"
         component={SavedCaptionPage}
         options={{
-          headerTitle: "Saved Caption",
+          headerShown: true,
+          headerTitle: "",
+          headerBackVisible: true,
         }}
       />
     </HistoryStack.Navigator>
@@ -44,7 +113,7 @@ function TabsNavigator() {
         name="Home"
         component={HomePage}
         options={{
-          headerTitleAlign: "center",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" color={color} size={size} />
           ),
@@ -68,12 +137,15 @@ function TabsNavigator() {
 export default function App() {
   return (
     <React.Fragment>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <NavigationContainer>
-          <TabsNavigator />
-        </NavigationContainer>
-      </ApplicationProvider>
+      <AuthProvider>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <NavigationContainer>
+            <HomeStackList />
+          </NavigationContainer>
+        </ApplicationProvider>
+        <ToastManager />
+      </AuthProvider>
     </React.Fragment>
   );
 }
