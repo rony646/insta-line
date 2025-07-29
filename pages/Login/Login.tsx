@@ -37,9 +37,13 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const { loggedInUser, setLoggedInUser } = useAuth();
+  const user = authentication.currentUser;
 
-  if (loggedInUser) {
+  if (loggedInUser || user) {
     console.log("User already logged in:", loggedInUser);
+    if (user && !loggedInUser) {
+      setLoggedInUser(user);
+    }
     navigation.navigate("HomeMain");
     return;
   }
@@ -173,29 +177,6 @@ export const Login = () => {
             : data.buttons.signUp}
         </Button>
       </View>
-
-      {/* <View style={S.styles.buttonContainer}>
-        <View style={S.styles.buttonWrapper}>
-          <TouchableNativeFeedback>
-            <View style={S.styles.button}>
-              <AntDesign name="facebook-square" size={24} color="#1877F2" />
-
-              <Text status="primary">{data.buttons.facebook}</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-
-        <View style={S.styles.buttonContainer}>
-          <View style={S.styles.buttonWrapper}>
-            <TouchableNativeFeedback>
-              <View style={S.styles.button}>
-                <AntDesign name="google" size={24} color="#FFBF00" />
-                <Text status="primary">{data.buttons.google}</Text>
-              </View>
-            </TouchableNativeFeedback>
-          </View>
-        </View>
-      </View> */}
     </View>
   );
 };
