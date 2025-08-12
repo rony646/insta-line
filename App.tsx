@@ -86,7 +86,13 @@ function HomeStackList() {
 function HistoryStackList() {
   return (
     <HistoryStack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
-      <HistoryStack.Screen name="History" component={HistoryPage} />
+      <HistoryStack.Screen
+        name="History"
+        component={HistoryPage}
+        options={{
+          headerShown: false,
+        }}
+      />
       <HistoryStack.Screen
         name="SavedCaption"
         component={SavedCaptionPage}

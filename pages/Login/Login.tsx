@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Image, View } from "react-native";
 
@@ -38,15 +38,6 @@ export const Login = () => {
 
   const { loggedInUser, setLoggedInUser } = useAuth();
   const user = authentication.currentUser;
-
-  if (loggedInUser || user) {
-    console.log("User already logged in:", loggedInUser);
-    if (user && !loggedInUser) {
-      setLoggedInUser(user);
-    }
-    navigation.navigate("HomeMain");
-    return;
-  }
 
   const handleSignUp = async () => {
     setLoading(true);
@@ -88,6 +79,16 @@ export const Login = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (loggedInUser || user) {
+      if (user && !loggedInUser) {
+        setLoggedInUser(user);
+      }
+      navigation.navigate("HomeMain");
+      return;
+    }
+  }, [user]);
 
   return (
     <View style={S.styles.container}>
