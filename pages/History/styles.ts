@@ -5,11 +5,12 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   wrapper: {
+    justifyContent: "center",
     alignItems: "center",
     width: "100%",
   },
   noCaptionsWrapper: {
-    height: "100%",
+    height: 600,
     alignItems: "center",
     justifyContent: "center",
     padding: 5,

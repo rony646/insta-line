@@ -17,7 +17,7 @@ import { generatePostCaption } from "@/services/endpoints";
 import React from "react";
 import Carousel from "@/components/Carousel";
 import ShowCaption from "@/components/ShowCaption";
-import { saveCaption } from "@/utils/asyncStorage";
+import { getAllCaptions, saveCaption } from "@/utils/asyncStorage";
 
 export const Home = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -55,7 +55,9 @@ export const Home = () => {
         base64Images,
         captionText,
         inputText
-      );
+      ).then(() => {
+        getAllCaptions();
+      });
 
       setLoading(false);
     } catch (error) {

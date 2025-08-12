@@ -35,26 +35,35 @@ export const deleteCaption = async (key: string) => {
 };
 
 export const getAllCaptions = async (): Promise<Caption[]> => {
-  const keys = await AsyncStorage.getAllKeys();
+  try {
+    const keys = await AsyncStorage.getAllKeys();
 
-  const values = await AsyncStorage.multiGet(keys);
+    const filteredKeys = keys.filter(
+      (key) => !key.startsWith("firebase:authUser")
+    );
 
-  const dataList = values.map(([key, value]) => {
-    const data = JSON.parse(value as string);
+    const values = await AsyncStorage.multiGet(filteredKeys);
 
-    const caption: Caption = {
-      key: key,
-      title: new Date(key).toLocaleString("en-US", {
-        dateStyle: "full",
-        timeStyle: "short",
-      }),
-      images: data.images,
-      description: data.description,
-      captionText: data.captionText || "",
-    };
+    const dataList = values.map(([key, value]) => {
+      const data = JSON.parse(value as string);
 
-    return caption;
-  });
+      const caption: Caption = {
+        key: key,
+        title: new Date(key).toLocaleString("en-US", {
+          dateStyle: "full",
+          timeStyle: "short",
+        }),
+        images: data.images,
+        description: data.description,
+        captionText: data.captionText || "",
+      };
 
-  return dataList;
+      return caption;
+    });
+
+    return dataList;
+  } catch (error) {
+    console.error("Error while fetching captions:", error);
+    return [];
+  }
 };
