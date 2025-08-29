@@ -30,7 +30,7 @@ Clone the repo and install dependencies:
 
 ```bash
 git clone https://github.com/yourusername/instacaption-ai.git
-cd instacaption-ai
+cd insta-line
 npm install
 ```
 
