@@ -9,7 +9,7 @@ Generate engaging Instagram captions instantly with the power of AI.
 </p>
 
 ## 🚀 Overview  
-InstaCaption AI lets you upload one or more images, optionally provide a short description, and get back a creative AI-generated caption ready to share on Instagram. The app also includes a **History screen**, where you can revisit all captions you’ve generated.  
+Insta Line lets you upload one or more images, optionally provide a short description, and get back a creative AI-generated caption ready to share on Instagram. The app also includes a **History screen**, where you can revisit all captions you’ve generated.  
 
 ## ✨ Features  
 - 📤 Upload single or multiple images  
@@ -29,7 +29,7 @@ InstaCaption AI lets you upload one or more images, optionally provide a short d
 Clone the repo and install dependencies:  
 
 ```bash
-git clone https://github.com/yourusername/instacaption-ai.git
+git clone https://github.com/rony646/insta-line.git
 cd insta-line
 npm install
 ```
