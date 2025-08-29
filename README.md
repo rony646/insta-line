@@ -1,4 +1,4 @@
-# 📸 InstaCaption AI  
+# 📸 Insta Line
 
 Generate engaging Instagram captions instantly with the power of AI.
 
