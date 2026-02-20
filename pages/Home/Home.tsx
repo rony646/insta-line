@@ -1,23 +1,25 @@
 import { useState } from "react";
 
-import { ToastAndroid, View } from "react-native";
+import { ToastAndroid } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as Mime from "react-native-mime-types";
 
-import { Button, Input, Text } from "@ui-kitten/components";
+import { Button, Input } from "@ui-kitten/components";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { data } from "./data";
 import { ImageType } from "@/components/Carousel/types";
 import * as S from "./styles";
 
-import { generatePostCaption } from "@/services/endpoints";
+
 import React from "react";
 import Carousel from "@/components/Carousel";
 import ShowCaption from "@/components/ShowCaption";
 import { getAllCaptions, saveCaption } from "@/utils/asyncStorage";
+
+import { generateCaption } from "@/lib/openai/caption";
 
 export const Home = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -46,14 +48,14 @@ export const Home = () => {
     try {
       const base64Images = await convertImagesToBase64(images);
 
-      const response = await generatePostCaption(description, base64Images);
-      const captionText = response.choices[0].message.content;
-      setCaption(captionText);
+      const{  caption}= await generateCaption({ description, imageUrls: base64Images });
+      
+      setCaption(caption);
 
       saveCaption(
         new Date().toISOString(),
         base64Images,
-        captionText,
+        caption,
         inputText
       ).then(() => {
         getAllCaptions();
